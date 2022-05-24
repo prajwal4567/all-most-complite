@@ -5,6 +5,8 @@
     canvas.width=innerWidth;
     canvas.height=innerHeight;
 
+    //all particle exept one from which distance is massured
+    let o=[]
     //array to store y-corrdinate of points
     let y=[];
     //array to store x-corrdinate of points
@@ -76,11 +78,17 @@
         animate();
     }
 
+    //function to find distance 
+    function distance(x1,y1,x2,y2){
+        let d=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
+        return d;
+    }
+
 //}
 
 //storage part{
     //create random x and y coordinate for points
-    for(i=0;i<6;i++){
+    for(let i=0;i<6;i++){
     x[i]=(Math.floor(Math.random(0,1400)*1400));
     y[i]=(Math.floor(Math.random(0,400)*400));
     }
@@ -90,50 +98,45 @@
     let ap=[point(x[3],y[3]),point(x[4],y[4]),point(x[5],y[5])];
     //array to store all point
     let a=[ap,rp];
-    console.log(x);
+    //repeltion point number 
+    let rpn=a[1].length
+    //attaraction point number
+    let atpn=a[0].length
+    //all point number 
+    let apn=atpn+rpn;
 //}
 
 //direction part{
-    
-    //function to define direction 
+     
+    //function to define direction
     function direction(a){
-        //repeltion point number 
-        let rpn=a[1].length-1
-        //attaraction point number
-        let atpn=a[0].length-1
-        //all point number 
-        let apn=atpn+rpn;
+        for(let i=0;i<6;i++){
+            if(i=0){
+                let x0=x[0]
+                x.splice(0,1);
+                console.log(x);
+                x.splice(0,0,x0)
+            }
+        }
     }
-direction(a);
 
 //}
 
 //magnatude part{
     
-    //function to find distance 
-    function distance(x1,y1,x2,y2){
-        let d=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
-        return d;
-    }
+    
     
     //function to create attaraction point
     function attaractionpoint(a){
-        //repeltion point number 
-        let rpn=a[1].length
-        //attaraction point number
-        let atpn=a[0].length
-        //all point number 
-        let apn=atpn+rpn;
     }
     
     //function to create replesion point
     function repletionpoint(a){
-        //repeltion point number 
-        let rpn=a[1].length
-        //attaraction point number
-        let atpn=a[0].length
-        //all point number 
-        let apn=atpn+rpn;
     }
     
 //}
+direction(a);
+attaractionpoint(a);
+repletionpoint(a);
+rp=[point(x[0],y[0]),point(x[1],y[1]),point(x[2],y[2])];
+ap=[point(x[3],y[3]),point(x[4],y[4]),point(x[5],y[5])];
