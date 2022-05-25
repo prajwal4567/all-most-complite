@@ -5,8 +5,26 @@
     canvas.width=innerWidth;
     canvas.height=innerHeight;
 
+    //line store
+    let lis=0;
+    //line store array
+    let lisa=[];
+    //point store
+    let ps=[];
+    //point
+    let p=[];
+    //all particle atraction point
+    let aap=[];
+    //y-cordinate of point avarge
+    let ya=0;
+    //x-cordinate of point avarge
+    let xa=0;
+    //point distance avarge
+    let pda=0;
+    //point distance
+    let pd=[];
     //all particle exept one from which distance is massured
-    let o=[]
+    let o=[];
     //array to store y-corrdinate of points
     let y=[];
     //array to store x-corrdinate of points
@@ -92,6 +110,8 @@
     x[i]=(Math.floor(Math.random(0,1400)*1400));
     y[i]=(Math.floor(Math.random(0,400)*400));
     }
+    x.sort(function(a,b){return a-b});
+    y.sort(function(a,b){return a-b});
     //array to store repailtion point
     let rp=[point(x[0],y[0]),point(x[1],y[1]),point(x[2],y[2])];
     //array to store attraction point
@@ -110,14 +130,13 @@
      
     //function to define direction
     function direction(a){
-        for(let i=0;i<6;i++){
-            if(i=0){
-                let x0=x[0]
-                x.splice(0,1);
-                console.log(x);
-                x.splice(0,0,x0)
-            }
+        for(let i=0;i<apn;i++){
+            pd.push(distance(x[i],y[i],0,0));
+            pda=pd.reduce((a,b)=>a+b,0)/pd.length;
+            xa=x.reduce((a,b)=>a+b,0)/x.length;
+            ya=y.reduce((a,b)=>a+b,0)/y.length;
         }
+        aap.push(xa,ya);
     }
 
 //}
@@ -128,10 +147,32 @@
     
     //function to create attaraction point
     function attaractionpoint(a){
+        function lineFromPoints(P, Q)
+        {
+            var a = Q[1] - P[1]
+            var b = P[0] - Q[0]
+            var c = a*(P[0]) + b*(P[1])
+        
+            if (b < 0){
+                return  a+"x - " + b + "y = " + c 
+            }else{
+                return  a+"x + " + b + "y = " + c
+            }
+        }
+        for(let i=0;i<apn;i++){
+            p=[x[i],y[i]];
+            ps.push(p);  
+        } 
+        for(let i=0;i<apn;i++){
+            lis=lineFromPoints(ps[i], aap);
+            lisa.push(lis);
+        } 
+        console.log(lisa);
     }
     
     //function to create replesion point
     function repletionpoint(a){
+
     }
     
 //}
