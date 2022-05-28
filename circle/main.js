@@ -5,10 +5,18 @@
     canvas.width=innerWidth;
     canvas.height=innerHeight;
 
-    //line store
-    let lis=0;
-    //line store array
-    let lisa=[];
+    //new x array
+    xn=[];
+    //new y array
+    yn=[];
+    //particle position store
+    let rps=[];
+    //particle position
+    let rp=[];
+    //attaraction point x
+    let cx=[];
+    //attaraction point x
+    let cy=[];
     //point store
     let ps=[];
     //point
@@ -60,9 +68,13 @@
             ctx.moveTo(sx,sy);
             ctx.lineTo(ex,ey);
             ctx.stroke();
-        }   
+        } 
 
-    // add axes and add property 
+    //function to find distance 
+    function distance(x1,y1,x2,y2){
+        let d=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
+        return d;
+    }
     addEventListener("mousedown",moveline=()=>{
         ctx.fillStyle='green';
         ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -80,104 +92,93 @@
         ys=axis(yxs,yys,yxe,yye);
     })
 
-    //function to create point 
-    function point(x,y){
-        function animate(){
-            requestAnimationFrame(animate);
-            // distance from y axis or x-corrdinate 
-            let dy=yxe-(-x);
-            // distance from x axis or y-corrdinate 
-            let dx=xys-y;
-            //the point
-            ctx.beginPath();
-            ctx.arc(dy,dx,5,0,2*Math.PI);
-            ctx.stroke()
-        }
-        animate();
-    }
-
-    //function to find distance 
-    function distance(x1,y1,x2,y2){
-        let d=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
-        return d;
-    }
-
 //}
 
 //storage part{
     //create random x and y coordinate for points
-    for(let i=0;i<6;i++){
-    x[i]=(Math.floor(Math.random(0,1400)*1400));
-    y[i]=(Math.floor(Math.random(0,400)*400));
+    let pn=6;
+    let atpn=3;
+    let rpn=3;
+    for(let i=0;i<pn;i++){
+    x[i]=(Math.round(Math.floor(Math.random(0,400)*400)));
+    y[i]=(Math.round(Math.floor(Math.random(0,400)*400)));
     }
     x.sort(function(a,b){return a-b});
     y.sort(function(a,b){return a-b});
-    //array to store repailtion point
-    let rp=[point(x[0],y[0]),point(x[1],y[1]),point(x[2],y[2])];
-    //array to store attraction point
-    let ap=[point(x[3],y[3]),point(x[4],y[4]),point(x[5],y[5])];
-    //array to store all point
-    let a=[ap,rp];
-    //repeltion point number 
-    let rpn=a[1].length
-    //attaraction point number
-    let atpn=a[0].length
-    //all point number 
-    let apn=atpn+rpn;
+    let apn=pn;
 //}
 
 //direction part{
      
     //function to define direction
-    function direction(a){
+    function direction(){
         for(let i=0;i<apn;i++){
             pd.push(distance(x[i],y[i],0,0));
             pda=pd.reduce((a,b)=>a+b,0)/pd.length;
             xa=x.reduce((a,b)=>a+b,0)/x.length;
             ya=y.reduce((a,b)=>a+b,0)/y.length;
         }
-        aap.push(xa,ya);
+
+        aap.push(Math.round(xa),Math.round(ya));
     }
 
 //}
 
 //magnatude part{
-    
-    
-    
+    let a=[];
+    let b=[];
+    let sa=0;
+    let sb=0;
     //function to create attaraction point
-    function attaractionpoint(a){
-        function lineFromPoints(P, Q)
-        {
-            var a = Q[1] - P[1]
-            var b = P[0] - Q[0]
-            var c = a*(P[0]) + b*(P[1])
-        
-            if (b < 0){
-                return  a+"x - " + b + "y = " + c 
-            }else{
-                return  a+"x + " + b + "y = " + c
-            }
+    function attaractionpoint(){
+        for(let i=0;i<apn;i++){
+            console.log(a);
+            cx=[(aap[0]-sa)/10]
+            cy=[(aap[1]-sb)/10]
+            ctx.fillStyle='green';
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+            x[i]=x[i]+cx[0];
+            y[i]=y[i]+cy[0];
+            point(x[i],y[i]);
+            rp=[x[i],y[i]];
+            rps.push(rp);
         }
-        for(let i=0;i<apn;i++){
-            p=[x[i],y[i]];
-            ps.push(p);  
-        } 
-        for(let i=0;i<apn;i++){
-            lis=lineFromPoints(ps[i], aap);
-            lisa.push(lis);
-        } 
-        console.log(lisa);
+        sa=x.splice(0,6);
+        sb=y.splice(0,6);
+        a.push(sa);
+        b.push(sb);
     }
-    
+
     //function to create replesion point
-    function repletionpoint(a){
+    function repletionpoint(){
 
     }
     
 //}
-direction(a);
-attaractionpoint(a);
-repletionpoint(a);
-rp=[point(x[0],y[0]),point(x[1],y[1]),point(x[2],y[2])];
-ap=[point(x[3],y[3]),point(x[4],y[4]),point(x[5],y[5])];
+    
+function animate(){
+    setTimeout(animate,1000);
+    direction();
+    attaractionpoint();
+    repletionpoint();
+}
+animate();
+
+function point(x,y){
+    function animate(){
+        requestAnimationFrame(animate);
+        //for(let i=apn-(rps.length-1);i>apn*2-(rps.length-1);i--){
+        // distance from y axis or x-corrdinate 
+        let dy=yxe-(-x);
+        // distance from x axis or y-corrdinate 
+        let dx=xys-y;
+        //the point
+        ctx.beginPath();
+        ctx.arc(dy,dx,2,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        //console.log(i);
+        //}
+    }
+    animate();
+}
