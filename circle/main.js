@@ -69,11 +69,33 @@
     })
 
 //particle number
-let pn=200;
+let pn=100;
 //attraction particle number
-let atpn=40;
+let atpn=20;
 //repailtion particle number
-let rpn=160;
+let rpn=80;
+let bx=500;
+let by=0;
+let bxa=[];
+let bya=[];
+    //create border particel
+    for(let i=0;i<500;i++){
+        let d=(Math.pow(2*(bx+by+Math.sqrt(2)*250),2)-4*4*100*bx-210000);
+        if(d<0){
+            d=d*-1;
+        }
+        bxa[i]=((bx+by+Math.sqrt(2)*250)/4)+(Math.sqrt(d)/8);
+        bx=bxa[i];
+        let yb=Math.pow(500,2)-Math.pow(bx,2);
+        if(yb<0){
+            yb=yb*-1;
+            bya[i]=-Math.sqrt(yb);
+            by=bya[i];
+        }
+        bya[i]=Math.sqrt(yb);
+        by=bya[i];
+    }
+    console.log(bxa);
     //create random x and y coordinate for points
     for(let i=0;i<pn/4;i++){
     x[i]=(Math.round(Math.floor(Math.random(-400,400)*350)));
@@ -94,22 +116,19 @@ let rpn=160;
 
 //all particle number
 let apn=pn;
+
 //function to define direction
 function direction(){
-    addEventListener("mousedown",moveline=()=>{
         for(let i=0;i<apn;i++){
             pd.push(distance(x[i],y[i],0,0));
             xa=x.reduce((a,b)=>a+b,0)/x.length;
             ya=y.reduce((a,b)=>a+b,0)/y.length;
         }
         aap.push(Math.round(xa),Math.round(ya));
-    })
 }
 
 //function to create attaraction point
 function allpoint(){
-    addEventListener("mousedown",moveline=()=>{
-
         function getCoordinateAfterRepailtion(x1,y1,x2,y2){
             if((distance(x1,y1,x2,y2))<11){
                 let cx=x2;
@@ -118,7 +137,7 @@ function allpoint(){
                 if(d<0){
                     d=d*-1
                 }
-                let a=-1+10/d;
+                let a=-1+100/d;
                 x1=(cx+(x1*(a+1)));
                 y1=(cy+(y1*(a+1)));
                 let arr=[x1,y1];
@@ -128,7 +147,6 @@ function allpoint(){
                 return arr;
             }
         }
-
         for(let i=0;i<apn;i++){
             cx=[(aap[0]-x[i])/10]
             cy=[(aap[1]-y[i])/10]
@@ -151,19 +169,9 @@ function allpoint(){
             }else if(i=apn-1){
                 n=1;
             }
-            if(distance(0,0,x[i],y[i])>500){
-                let d=Math.sqrt(Math.pow(x[i],2)+Math.pow(y[i],2))
-                if(d<0){
-                    d=d*-1;
-                }
-                let a=1-500/d;
-                x[i]=x[i]-(x[i]*a);
-                y[i]=y[i]-(y[i]*a);
-            }
             for(let v=0;v<rpn;v++){
                 if(i===v)continue;
                 let rx=getCoordinateAfterRepailtion(x[i],y[i],x[v],y[v]);
-                console.log(distance(x[v],y[v],x[i],y[i]));
                 x[i]=rx[0];
                 y[i]=rx[1];
             }
@@ -210,7 +218,7 @@ function allpoint(){
         ctx.stroke();
         ctx.closePath();
         ctx.beginPath();
-        ctx.arc(yxe-(-x[10]),xys-y[0],3,0,2*Math.PI);
+        ctx.arc(yxe-(-x[10]),xys-y[10],3,0,2*Math.PI);
         ctx.stroke();
         ctx.closePath();
         ctx.beginPath();
@@ -570,416 +578,101 @@ function allpoint(){
         ctx.stroke();
         ctx.closePath();
         ctx.beginPath();
-        ctx.arc(yxe-(-x[100]),xys-y[0],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[101]),xys-y[101],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[102]),xys-y[102],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[103]),xys-y[103],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[104]),xys-y[104],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[105]),xys-y[105],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[106]),xys-y[106],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[107]),xys-y[107],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[108]),xys-y[108],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[109]),xys-y[109],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[110]),xys-y[10],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[111]),xys-y[111],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[112]),xys-y[112],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[113]),xys-y[113],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[114]),xys-y[114],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[115]),xys-y[115],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[116]),xys-y[116],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[117]),xys-y[117],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[118]),xys-y[118],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[119]),xys-y[119],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[120]),xys-y[120],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[121]),xys-y[121],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[122]),xys-y[122],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[123]),xys-y[123],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[124]),xys-y[124],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[125]),xys-y[125],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[126]),xys-y[126],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[127]),xys-y[127],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[128]),xys-y[128],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[129]),xys-y[129],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[130]),xys-y[130],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[131]),xys-y[131],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[132]),xys-y[132],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[133]),xys-y[133],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[134]),xys-y[134],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[135]),xys-y[135],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[136]),xys-y[136],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[137]),xys-y[137],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[138]),xys-y[138],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[139]),xys-y[139],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[140]),xys-y[140],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[141]),xys-y[141],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[142]),xys-y[142],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[143]),xys-y[143],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[144]),xys-y[144],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[145]),xys-y[145],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[146]),xys-y[146],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[147]),xys-y[147],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[148]),xys-y[148],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[149]),xys-y[149],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[150]),xys-y[150],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[151]),xys-y[151],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[152]),xys-y[152],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[153]),xys-y[153],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[154]),xys-y[154],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[155]),xys-y[155],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[156]),xys-y[156],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[157]),xys-y[157],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[158]),xys-y[158],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[159]),xys-y[159],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[160]),xys-y[160],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[161]),xys-y[161],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[162]),xys-y[162],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[163]),xys-y[163],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[164]),xys-y[164],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[165]),xys-y[165],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[166]),xys-y[166],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[167]),xys-y[167],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[168]),xys-y[168],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[169]),xys-y[169],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[170]),xys-y[170],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[171]),xys-y[171],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[172]),xys-y[172],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[173]),xys-y[173],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[174]),xys-y[174],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[175]),xys-y[175],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[176]),xys-y[176],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[177]),xys-y[177],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[178]),xys-y[178],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[179]),xys-y[179],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[180]),xys-y[180],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[181]),xys-y[181],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[182]),xys-y[182],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[183]),xys-y[183],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[184]),xys-y[184],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[185]),xys-y[185],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[186]),xys-y[186],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[187]),xys-y[187],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[188]),xys-y[188],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[189]),xys-y[189],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[190]),xys-y[190],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[191]),xys-y[191],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[192]),xys-y[192],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[193]),xys-y[193],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[194]),xys-y[194],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[195]),xys-y[195],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[196]),xys-y[196],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[197]),xys-y[197],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[198]),xys-y[198],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-x[199]),xys-y[199],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
         ctx.arc(yxe,xys,500,0,2*Math.PI);
         ctx.stroke();
         ctx.closePath();
         xs=axis(xxs,xys,xxe,xye);
         ys=axis(yxs,yys,yxe,yye);
-    })
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[0]),xys-bya[0],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[1]),xys-bya[1],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[2]),xys-bya[2],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[3]),xys-bya[3],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[4]),xys-bya[4],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[5]),xys-bya[5],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[6]),xys-bya[6],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[7]),xys-bya[7],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[8]),xys-bya[8],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[9]),xys-bya[9],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[10]),xys-bya[10],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[11]),xys-bya[11],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[12]),xys-bya[12],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[13]),xys-bya[13],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[14]),xys-bya[14],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[15]),xys-bya[15],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[16]),xys-bya[16],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[17]),xys-bya[17],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[18]),xys-bya[18],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[19]),xys-bya[19],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(yxe-(-bxa[20]),xys-bya[20],3,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
 }
 
 function animate(){
+    addEventListener("mousedown",moveline=()=>{
     direction();
     allpoint();
+    })
 }
 animate();
