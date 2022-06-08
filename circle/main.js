@@ -38,6 +38,25 @@
     //y axis end y-corrdinate 
     let yye=0;
 
+    function getCoordinateAfterRepailtion(x1,y1,x2,y2,o,p){
+        if((distance(x1,y1,x2,y2))<100){
+            let cx=x2;
+            let cy=y2;
+            let d=Math.sqrt(Math.pow(x1,2)+Math.pow(y1,2));
+            if(d<0){
+                d=d*-1
+            }
+            let a=-1+100/d;
+            x1=(cx+(x1*(a+1)));
+            y1=(cy+(y1*(a+1)));
+            let arr=[x1,y1];
+            return arr;
+        }else{
+            let arr=[x1,y1];
+            return arr;
+        }
+    }
+
     //create axis with no property 
     function axis(sx,sy,ex,ey){
             ctx.beginPath();
@@ -71,32 +90,19 @@
 //particle number
 let pn=100;
 //attraction particle number
-let atpn=20;
+let atpn=80;
 //repailtion particle number
-let rpn=80;
-let bx=500;
-let by=0;
+let rpn=20;
 let bxa=[];
 let bya=[];
-    //create border particel
-    for(let i=0;i<500;i++){
-        let d=(Math.pow(2*(bx+by+Math.sqrt(2)*250),2)-4*4*100*bx-210000);
-        if(d<0){
-            d=d*-1;
-        }
-        bxa[i]=((bx+by+Math.sqrt(2)*250)/4)+(Math.sqrt(d)/8);
-        bx=bxa[i];
-        let yb=Math.pow(500,2)-Math.pow(bx,2);
-        if(yb<0){
-            yb=yb*-1;
-            bya[i]=-Math.sqrt(yb);
-            by=bya[i];
-        }
-        bya[i]=Math.sqrt(yb);
-        by=bya[i];
+    let items = 18; 
+    let x0 = yxe-(-0);
+    let y0 = xys-0;
+
+    for(var i = 0; i < items; i++) {
+        bxa[i]= x0 + 500 * Math.cos(2 * Math.PI * i / items); // WHAT IS HAPPENING HERE?
+        bya[i]= y0 + 500 * Math.sin(2 * Math.PI * i / items); // WHAT IS HAPPENING HERE?
     }
-    console.log(bxa);
-    //create random x and y coordinate for points
     for(let i=0;i<pn/4;i++){
     x[i]=(Math.round(Math.floor(Math.random(-400,400)*350)));
     y[i]=(Math.round(Math.floor(Math.random(-400,400)*350)));
@@ -116,51 +122,277 @@ let bya=[];
 
 //all particle number
 let apn=pn;
+let mp=[x,y];
+let bp=[bxa,bya];
+
+for(let i=0;i<apn;i++){
+    let n=0;
+    if(i!=apn-1){
+        n=0;
+    }else if(i=apn-1){
+        n=1;
+    }
+    for(let v=0;v<items;v++){
+        let rx=getCoordinateAfterRepailtion(x[i],y[i],x[v],y[v],mp,bp);
+        x[i]=rx[0];
+        y[i]=rx[1];
+    }
+}
+
+let t=[];
+let b=[];
+let r=[];
+let l=[];
+let ne=[];
+let nw=[];
+let se=[];
+let sw=[];
+let arr=[];
+let c=[];
+let xb=0;
+let yb=0;
+let cvi=0;
 
 //function to define direction
 function direction(){
-        for(let i=0;i<apn;i++){
-            pd.push(distance(x[i],y[i],0,0));
-            xa=x.reduce((a,b)=>a+b,0)/x.length;
-            ya=y.reduce((a,b)=>a+b,0)/y.length;
+    ne.splice(0,ne.length);
+    nw.splice(0,nw.length);
+    se.splice(0,se.length);
+    sw.splice(0,sw.length);
+    t.splice(0,t.length);
+    b.splice(0,b.length);
+    r.splice(0,r.length);
+    l.splice(0,l.length);
+    aap.splice(0,aap.length);
+    for(let i=0;i<apn;i++){
+        pd.push(distance(x[i],y[i],0,0));
+        if(Math.sign(x[i])===1 && Math.sign(y[i])===1){
+            let arr={x:x[i],y:y[i]};
+            ne.push(arr);
         }
-        aap.push(Math.round(xa),Math.round(ya));
+        if(Math.sign(x[i])===-1 && Math.sign(y[i])===1){
+            let arr2={x:x[i],y:y[i]};
+            nw.push(arr2);
+        }
+        if(Math.sign(x[i])===1 && Math.sign(y[i])===-1){
+            let arr3={x:x[i],y:y[i]};
+            se.push(arr3);
+        }
+        if(Math.sign(x[i])===-1 && Math.sign(y[i])===-1){
+            let arr4={x:x[i],y:y[i]};
+            sw.push(arr4);
+        }
+        if(Math.sign(x[i])===0 && Math.sign(y[i])===1){
+            let arr5={x:x[i],y:y[i]};
+            t.push(arr5);
+        }
+        if(Math.sign(x[i])===0 && Math.sign(y[i])===-1){
+            let arr6={x:x[i],y:y[i]};
+            b.push(arr6);
+        }
+        if(Math.sign(x[i])===1 && Math.sign(y[i])===0){
+            let arr7={x:x[i],y:y[i]};
+            r.push(arr7);
+        }
+        if(Math.sign(x[i])===-1 && Math.sign(y[i])===0){
+            let arr8={x:x[i],y:y[i]};
+            l.push(arr8);
+        }
+        xa=0;
+        let tpd=apn/8;
+        let diff=0;
+        let diff2=0;
+        let diff3=0;
+        let diff4=0;
+        let diff5=0;
+        let diff6=0;
+        let diff7=0;
+        let diff8=0;
+        if(ne.length>tpd){
+            diff=ne.length-tpd;
+            xa=xa+(diff/(apn-tpd)*500);
+        }
+        if(nw.length>tpd){
+            diff2=nw.length-tpd;
+            xa=xa+(diff2/(apn-tpd)*500);
+        }
+        if(se.length>tpd){
+            diff3=se.length-tpd;
+            xa=xa+(diff3/(apn-tpd)*500);
+        }
+        if(sw.length>tpd){
+            diff4=sw.length-tpd;
+            xa=xa+(diff4/(apn-tpd)*500);
+        }
+        if(t.length>tpd){
+            diff5=t.length-tpd;
+            xa=xa+(diff5/(apn-tpd)*500);
+        }
+        if(b.length>tpd){
+            diff6=b.length-tpd;
+            xa=xa+(diff6/(apn-tpd)*500);
+        }
+        if(r.length>tpd){
+            diff7=r.length-tpd;
+            xa=xa+(diff7/(apn-tpd)*500);
+        }
+        if(l.length>tpd){
+            diff8=l.length-tpd;
+            xa=xa+(diff8/(apn-tpd)*500);
+        }
+        c=[diff,diff2,diff3,diff4,diff5,diff6,diff7,diff8];
+        let cv=Math.max(...c);
+        cvi=c.indexOf(cv);
+        if(cvi===0){
+            for(let v=0;v<ne.length;v++){
+                let ta=[];
+                let ta2=[];
+                ta.push(ne[v].x);
+                ta2.push(ne[v].y);
+                let axm=ta.reduce((a,b)=>a*b);
+                let aym=ta2.reduce((a,b)=>a*b);
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                xb=axm*a;
+                yb=aym*a;
+                aap.pop();
+                aap.push(xb,yb);
+                aap.splice(0,aap.length-2);
+                console.log(aap);           
+            }
+        }
+        if(cvi===1){
+            for(let k=0;k<nw.length;k++){
+                let ta=[];
+                let ta2=[];
+                ta.push(nw[k].x);
+                ta2.push(nw[k].y);
+                let axm=ta.reduce((a,b)=>a*b);
+                let aym=ta2.reduce((a,b)=>a*b);
+                if(axm>0){
+                    axm=axm*-1;
+                }
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                xb=axm*a;
+                yb=aym*a;
+                aap.pop();
+                aap.push(xb,yb);
+                aap.splice(0,aap.length-2);
+                console.log(aap);
+            }
+        }
+        if(cvi===2){
+            for(let c=0;c<se.length;c++){
+                let ta=[];
+                let ta2=[];
+                ta.push(se[c].x);
+                ta2.push(se[c].y);
+                let axm=ta.reduce((a,b)=>a*b);
+                let aym=ta2.reduce((a,b)=>a*b);
+                if(aym>0){
+                    aym=aym*-1;
+                }
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                xb=axm*a;
+                yb=aym*a;
+                aap.pop();
+                aap.push(xb,yb);
+                aap.splice(0,aap.length-2);
+                console.log(aap);
+            }
+        }
+        if(cvi===3){
+            for(let s=0;s<sw.length;s++){
+                let ta=[];
+                let ta2=[];
+                ta.push(sw[s].x);
+                ta2.push(sw[s].y);
+                let axm=ta.reduce((a,b)=>a*b);
+                let aym=ta2.reduce((a,b)=>a*b);
+                if(axm>0){
+                    axm=axm*-1;
+                }
+                if(aym>0){
+                    aym=aym*-1;
+                }
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                xb=axm*a;
+                yb=aym*a;
+                aap.pop();
+                aap.push(xb,yb);
+                aap.splice(0,aap.length-2);
+                console.log(aap);
+            }
+        }
+        if(cvi===4){
+            for(let v=0;v<t.length;v++){
+                let ta=[];
+                let ta2=[];
+                ta.push(t[v].x);
+                ta2.push(t[v].y);
+                axm=ta.reduce((a,b)=>a*b);
+                aym=ta2.reduce((a,b)=>a*b);
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                yb=aym*a;
+            }
+        }
+        if(cvi===5){
+            for(let v=0;v<b.length;v++){
+                let ta=[];
+                let ta2=[];
+                ta.push(b[v].x);
+                ta2.push(b[v].y);
+                axm=ta.reduce((a,b)=>a*b);
+                aym=ta2.reduce((a,b)=>a*b);
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                yb=aym*a;
+            }
+        }
+        if(cvi===6){
+            for(let v=0;v<r.length;v++){
+                let ta=[];
+                let ta2=[];
+                ta.push(r[v].x);
+                ta2.push(r[v].y);
+                axm=ta.reduce((a,b)=>a*b);
+                aym=ta2.reduce((a,b)=>a*b);
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                xb=axm*a;
+            }
+        }
+        if(cvi===7){
+            for(let v=0;v<l.length;v++){
+                let ta=[];
+                let ta2=[];
+                ta.push(l[v].x);
+                ta2.push(l[v].y);
+                axm=ta.reduce((a,b)=>a*b);
+                aym=ta2.reduce((a,b)=>a*b);
+                let d=Math.pow(axm,2)+Math.pow(aym,2);
+                let a=xa/Math.sqrt(d);
+                xb=axm*a;
+            }
+        }
+    }
 }
 
 //function to create attaraction point
 function allpoint(){
-        function getCoordinateAfterRepailtion(x1,y1,x2,y2){
-            if((distance(x1,y1,x2,y2))<11){
-                let cx=x2;
-                let cy=y2;
-                let d=Math.sqrt(Math.pow(x1,2)+Math.pow(y1,2));
-                if(d<0){
-                    d=d*-1
-                }
-                let a=-1+100/d;
-                x1=(cx+(x1*(a+1)));
-                y1=(cy+(y1*(a+1)));
-                let arr=[x1,y1];
-                return arr;
-            }else{
-                let arr=[x1,y1];
-                return arr;
-            }
-        }
         for(let i=0;i<apn;i++){
             cx=[(aap[0]-x[i])/10]
             cy=[(aap[1]-y[i])/10]
-            if(pd[i]<500){
             x[i]=x[i]+cx[0];
             y[i]=y[i]+cy[0];
             ctx.beginPath();
             ctx.fillStyle='green';
             ctx.fillRect(0,0,canvas.width,canvas.height);
             ctx.closePath();
-            }else if(pd[i]>500){
-                x[i]=x[i]+(500-x[i]);
-                y[i]=x[i]+(500-x[i]);
-            }
         }
         for(let i=0;i<apn;i++){
             let n=0;
@@ -171,7 +403,7 @@ function allpoint(){
             }
             for(let v=0;v<rpn;v++){
                 if(i===v)continue;
-                let rx=getCoordinateAfterRepailtion(x[i],y[i],x[v],y[v]);
+                let rx=getCoordinateAfterRepailtion(x[i],y[i],x[v],y[v],mp,bp);
                 x[i]=rx[0];
                 y[i]=rx[1];
             }
@@ -661,10 +893,6 @@ function allpoint(){
         ctx.closePath();
         ctx.beginPath();
         ctx.arc(yxe-(-bxa[19]),xys-bya[19],3,0,2*Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(yxe-(-bxa[20]),xys-bya[20],3,0,2*Math.PI);
         ctx.stroke();
         ctx.closePath();
 }
