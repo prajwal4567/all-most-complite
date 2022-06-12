@@ -38,8 +38,10 @@
     //y axis end y-corrdinate 
     let yye=0;
 
-    function getCoordinateAfterRepailtion(x1,y1,x2,y2,o,p){
+    function getCoordinateAfterRepailtion(x1,y1,x2,y2,othx,othy){
         if((distance(x1,y1,x2,y2))<100){
+            let ox=x1;
+            let oy=y1;
             let cx=x2;
             let cy=y2;
             let d=Math.sqrt(Math.pow(x1,2)+Math.pow(y1,2));
@@ -49,6 +51,27 @@
             let a=-1+100/d;
             x1=(cx+(x1*(a+1)));
             y1=(cy+(y1*(a+1)));
+            if(distance(x2,y2,x1,y1)>distance(x2,y2,othx,othy)){
+                let rx=x1-ox;
+                let ry=y1-oy;
+                let k=othx-ox;
+                let m=othy-oy;
+                let A=rx*rx+ry*ry;
+                let B=-2*(k*rx+m*ry);
+                let C=k*k+m*m-10000;
+                let b=(-k+m*(ry/rx))/(rx-((ry*ry)/rx));
+                let nix=ox+(rx*b);
+                let niy=oy+(ry*b);
+                if(distance(othx,othy,nix,niy)<100){
+                    let d=(B*B)+(-4*A*C);
+                    if(d<0){
+                        d=d*-1
+                    }
+                    let a=-B-Math.sqrt(d)/2*A;
+                    x1=ox+(rx*a);
+                    y1=oy+(ry*a);
+                }
+            }
             let arr=[x1,y1];
             return arr;
         }else{
@@ -93,15 +116,17 @@ let pn=100;
 let atpn=80;
 //repailtion particle number
 let rpn=20;
-let bxa=[];
-let bya=[];
-    let items = 18; 
-    let x0 = yxe-(-0);
-    let y0 = xys-0;
-
+    let items = 20; // say there are 10 points to be plotted.
+    let x0 = yxe;
+    let y0 = xys;
+    let bxa =[];
+    let bya =[];
+    // Remember top left pixel of computer screen is (0,0) and both axis go positive from left to right and top to bottom.
+    
     for(var i = 0; i < items; i++) {
         bxa[i]= x0 + 500 * Math.cos(2 * Math.PI * i / items); // WHAT IS HAPPENING HERE?
         bya[i]= y0 + 500 * Math.sin(2 * Math.PI * i / items); // WHAT IS HAPPENING HERE?
+
     }
     for(let i=0;i<pn/4;i++){
     x[i]=(Math.round(Math.floor(Math.random(-400,400)*350)));
@@ -122,22 +147,6 @@ let bya=[];
 
 //all particle number
 let apn=pn;
-let mp=[x,y];
-let bp=[bxa,bya];
-
-for(let i=0;i<apn;i++){
-    let n=0;
-    if(i!=apn-1){
-        n=0;
-    }else if(i=apn-1){
-        n=1;
-    }
-    for(let v=0;v<items;v++){
-        let rx=getCoordinateAfterRepailtion(x[i],y[i],x[v],y[v],mp,bp);
-        x[i]=rx[0];
-        y[i]=rx[1];
-    }
-}
 
 let t=[];
 let b=[];
@@ -257,8 +266,7 @@ function direction(){
                 yb=aym*a;
                 aap.pop();
                 aap.push(xb,yb);
-                aap.splice(0,aap.length-2);
-                console.log(aap);           
+                aap.splice(0,aap.length-2);           
             }
         }
         if(cvi===1){
@@ -279,7 +287,6 @@ function direction(){
                 aap.pop();
                 aap.push(xb,yb);
                 aap.splice(0,aap.length-2);
-                console.log(aap);
             }
         }
         if(cvi===2){
@@ -300,7 +307,6 @@ function direction(){
                 aap.pop();
                 aap.push(xb,yb);
                 aap.splice(0,aap.length-2);
-                console.log(aap);
             }
         }
         if(cvi===3){
@@ -324,7 +330,6 @@ function direction(){
                 aap.pop();
                 aap.push(xb,yb);
                 aap.splice(0,aap.length-2);
-                console.log(aap);
             }
         }
         if(cvi===4){
@@ -394,18 +399,54 @@ function allpoint(){
             ctx.fillRect(0,0,canvas.width,canvas.height);
             ctx.closePath();
         }
-        for(let i=0;i<apn;i++){
-            let n=0;
-            if(i!=apn-1){
-                n=0;
-            }else if(i=apn-1){
-                n=1;
+        let othax=[];
+        let othay=[];
+        let repx=[];
+        let repy=[];
+        let hrepx=[];
+        let hrepy=[];
+        repx.splice(0,x.length-1);
+        repy.splice(0,y.length-1);
+        hrepx.splice(0,rpn);
+        hrepy.splice(0,rpn);
+        othax.splice(0,rpn);
+        othay.splice(0,rpn);
+        for(let k=0;k<x.length;k++){
+            repx.push(x[k]);
+            repy.push(y[k]);
+        }
+        for(let n=0;n<rpn;n++){
+            hrepx.push(x[n]);
+            hrepy.push(y[n]);
+            othax.push(x[n]);
+            othay.push(y[n]);
+        }
+        let rx=[];
+        let i=0;
+        let n=0;
+        let k=0;
+        function animate(){
+            i+=1;
+            if(i>-1){
+                rx=getCoordinateAfterRepailtion(repx[n],repy[n],hrepx[k],hrepy[k],othax[i],othay[i]);
+                x[n]=rx[0];
+                y[n]=rx[1];
+                console.log([y[n],n]);
             }
-            for(let v=0;v<rpn;v++){
-                if(i===v)continue;
-                let rx=getCoordinateAfterRepailtion(x[i],y[i],x[v],y[v],mp,bp);
-                x[i]=rx[0];
-                y[i]=rx[1];
+            if(i===othax.length-1){
+                n=n+1;
+                i=0;
+            }
+            if(n===repx.length-1){
+                k=k+1;
+                n=0;
+            }
+            if(k<hrepx.length){
+                animate();
+            }
+            if(k===hrepx.length-1){
+                k=0;
+                return ;
             }
         }
         animate();
