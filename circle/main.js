@@ -61,7 +61,7 @@ function getCoordinateAfterRepailtion(x1,y1,x2,y2,othx,othy){
             let b=(-k+m*(ry/rx))/(rx-((ry*ry)/rx));
             let nix=ox+(rx*b);
             let niy=oy+(ry*b);
-            if(distance(othx,othy,nix,niy)<100 && distance(othx,othy,x1,y2)>0){
+            if(distance(othx,othy,nix,niy)<100 && distance(othx,othy,x1,y1)>0 && distance(othx,othy,x2,y2)>0){
                 let d=Math.sqrt((B*B)+(-4*A*C));
                 if(d<0){
                     d=d*-1
@@ -116,11 +116,11 @@ addEventListener("mousedown",moveline=()=>{
 })
 
 //particle number
-let pn=16;
+let pn=25;
 //attraction particle number
-let atpn=8;
+let atpn=10;
 //repailtion particle number
-let rpn=8;
+let rpn=17;
     let items = 20; // say there are 10 points to be plotted.
     let x0 = yxe;
     let y0 = xys;
