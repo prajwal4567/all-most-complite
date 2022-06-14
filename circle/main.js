@@ -1,127 +1,126 @@
-//setup part{
-    const canvas = document.querySelector('canvas');
-    const ctx = canvas.getContext('2d');
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
 
-    canvas.width=innerWidth;
-    canvas.height=innerHeight;
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
-    //all particle atraction point
-    let aap=[];
-    //y-cordinate of point avarge
-    let ya=0;
-    //x-cordinate of point avarge
-    let xa=0;
-    //point distance
-    let pd=[];
-    //array to store y-corrdinate of points
-    let y=[];
-    //array to store x-corrdinate of points
-    let x=[];
-    //mouse x 
-    let mx=0;
-    //mouse y 
-    let my=0;
-    //x axis start x-corrdinate
-    let xxs=0;
-    //x axis end x-corrdinate 
-    let xxe=0;
-    //x axis start y-corrdinate
-    let xys=0;
-    //x axis end y-corrdinate 
-    let xye=0;
-    //y axis start x-corrdinate
-    let yxs=0;
-    //y axis end x-corrdinate 
-    let yxe=0;
-    //y axis start y-corrdinate
-    let yys=0;
-    //y axis end y-corrdinate 
-    let yye=0;
+//all particle atraction point
+let aap=[];
+//y-cordinate of point avarge
+let ya=0;
+//x-cordinate of point avarge
+let xa=0;
+//point distance
+let pd=[];
+//array to store y-corrdinate of points
+let y=[];
+//array to store x-corrdinate of points
+let x=[];
+//mouse x 
+let mx=0;
+//mouse y 
+let my=0;
+//x axis start x-corrdinate
+let xxs=0;
+//x axis end x-corrdinate 
+let xxe=0;
+//x axis start y-corrdinate
+let xys=0;
+//x axis end y-corrdinate 
+let xye=0;
+//y axis start x-corrdinate
+let yxs=0;
+//y axis end x-corrdinate 
+let yxe=0;
+//y axis start y-corrdinate
+let yys=0;
+//y axis end y-corrdinate 
+let yye=0;
 
-    function getCoordinateAfterRepailtion(x1,y1,x2,y2,othx,othy){
-        if(distance(x1,y1,x2,y2)<100 && distance(x1,y1,x2,y2)>0){
-            let ox=x1;
-            let oy=y1;
-            let cx=x2;
-            let cy=y2;
-            let d=Math.sqrt(Math.pow(x1,2)+Math.pow(y1,2));
-            if(d<0){
-                d=d*-1
-            }
-            let a=-1+100/d;
-            x1=(cx+(x1*(a+1)));
-            y1=(cy+(y1*(a+1)));
-            if(distance(x2,y2,x1,y1)>distance(x2,y2,othx,othy) && distance(x2,y2,x1,y1)!=distance(x2,y2,othx,othy)){
-                let rx=x1-ox;
-                let ry=y1-oy;
-                let k=othx-ox;
-                let m=othy-oy;
-                let A=rx*rx+ry*ry;
-                let B=-2*(k*rx+m*ry);
-                let C=k*k+m*m-10000;
-                let b=(-k+m*(ry/rx))/(rx-((ry*ry)/rx));
-                let nix=ox+(rx*b);
-                let niy=oy+(ry*b);
-                if(distance(othx,othy,nix,niy)<100 ){
-                    let d=Math.sqrt((B*B)+(-4*A*C));
-                    if(d<0){
-                        d=d*-1
-                    }
-                    let a=(-B-d)/(2*A);
-                    x1=ox+(rx*a);
-                    y1=oy+(ry*a);
-                }else{
-                    let arr=[x1,y1];
-                    return arr;
+function getCoordinateAfterRepailtion(x1,y1,x2,y2,othx,othy){
+    if(distance(x1,y1,x2,y2)<100 && distance(x1,y1,x2,y2)>0){
+        let ox=x1;
+        let oy=y1;
+        let cx=x2;
+        let cy=y2;
+        let d=Math.sqrt(Math.pow(x1,2)+Math.pow(y1,2));
+        if(d<0){
+            d=d*-1
+        }
+        let a=-1+100/d;
+        x1=(cx+(x1*(a+1)));
+        y1=(cy+(y1*(a+1)));
+        if(distance(x2,y2,x1,y1)>distance(x2,y2,othx,othy) && distance(x2,y2,x1,y1)!=distance(x2,y2,othx,othy)){
+            let rx=x1-ox;
+            let ry=y1-oy;
+            let k=othx-ox;
+            let m=othy-oy;
+            let A=rx*rx+ry*ry;
+            let B=-2*(k*rx+m*ry);
+            let C=k*k+m*m-10000;
+            let b=(-k+m*(ry/rx))/(rx-((ry*ry)/rx));
+            let nix=ox+(rx*b);
+            let niy=oy+(ry*b);
+            if(distance(othx,othy,nix,niy)<100 && distance(othx,othy,x1,y2)>0){
+                let d=Math.sqrt((B*B)+(-4*A*C));
+                if(d<0){
+                    d=d*-1
                 }
-                let arr=[x1,y1];
-                return arr;
+                let a=(-B-d)/(2*A);
+                x1=ox+(rx*a);
+                y1=oy+(ry*a);
             }else{
                 let arr=[x1,y1];
                 return arr;
             }
+            let arr=[x1,y1];
+            return arr;
         }else{
             let arr=[x1,y1];
             return arr;
         }
+    }else{
+        let arr=[x1,y1];
+        return arr;
     }
+}
 
-    //create axis with no property 
-    function axis(sx,sy,ex,ey){
-            ctx.beginPath();
-            ctx.moveTo(sx,sy);
-            ctx.lineTo(ex,ey);
-            ctx.stroke();
-        } 
+//create axis with no property 
+function axis(sx,sy,ex,ey){
+        ctx.beginPath();
+        ctx.moveTo(sx,sy);
+        ctx.lineTo(ex,ey);
+        ctx.stroke();
+    } 
 
-    //function to find distance 
-    function distance(x1,y1,x2,y2){
-        let d=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
-        return d;
-    }
+//function to find distance 
+function distance(x1,y1,x2,y2){
+    let d=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
+    return d;
+}
 
-    //axis line coordinate
-    addEventListener("mousedown",moveline=()=>{
-        ctx.fillStyle='green';
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        mx=event.clientX;
-        my=event.clientY;
-        xxs=0;    
-        xxe=canvas.width;    
-        xys=my;    
-        xye=my;    
-        yxs=mx;   
-        yxe=mx;    
-        yys=0; 
-        yye=canvas.height;                    
-    })
+//axis line coordinate
+addEventListener("mousedown",moveline=()=>{
+    ctx.fillStyle='green';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    mx=event.clientX;
+    my=event.clientY;
+    xxs=0;    
+    xxe=canvas.width;    
+    xys=my;    
+    xye=my;    
+    yxs=mx;   
+    yxe=mx;    
+    yys=0; 
+    yye=canvas.height;                    
+})
 
 //particle number
-let pn=8;
+let pn=16;
 //attraction particle number
-let atpn=2;
+let atpn=8;
 //repailtion particle number
-let rpn=6;
+let rpn=8;
     let items = 20; // say there are 10 points to be plotted.
     let x0 = yxe;
     let y0 = xys;
