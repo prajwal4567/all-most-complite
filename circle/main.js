@@ -146,11 +146,11 @@ addEventListener("mousedown",moveline=()=>{
 })
 
 //particle number
-let pn=20;
+let pn=100;
 //attraction particle number
-let atpn=2;
+let atpn=10;
 //repailtion particle number
-let rpn=18;
+let rpn=90;
     let items = 20; // say there are 10 points to be plotted.
     let x0 = yxe;
     let y0 = xys;
@@ -226,19 +226,19 @@ function direction(){
         let diff4=0;
         if(ne.length>tpd){
             diff=ne.length-tpd;
-            xa=xa+(diff/(apn-tpd)*500);
+            xa=xa+((diff/(apn-tpd))*500);
         }
         if(nw.length>tpd){
             diff2=nw.length-tpd;
-            xa=xa+(diff2/(apn-tpd)*500);
+            xa=xa+((diff2/(apn-tpd))*500);
         }
         if(se.length>tpd){
             diff3=se.length-tpd;
-            xa=xa+(diff3/(apn-tpd)*500);
+            xa=xa+((diff3/(apn-tpd))*500);
         }
         if(sw.length>tpd){
             diff4=sw.length-tpd;
-            xa=xa+(diff4/(apn-tpd)*500);
+            xa=xa+((diff4/(apn-tpd))*500);
         }
         c=[diff,diff2,diff3,diff4];
         let cv=Math.max(...c);
@@ -325,6 +325,7 @@ function direction(){
         }
     }
 }
+let ca=0;
 //function to create attaraction point
 function allpoint(){
     let othax=[];
@@ -368,13 +369,6 @@ function allpoint(){
     let ao=[];
     let aij=0;
     let type='';
-    let c=0;
-    for(let ai=0;ai<apn;ai++){
-        cx=[(aap[0]-x[ai])];
-        cy=[(aap[1]-y[ai])];
-        x[ai]=cx[0];
-        y[ai]=cy[0];
-    }
     function animate(){
         i+=1;
         if(i>-1){
@@ -424,15 +418,21 @@ function allpoint(){
                 hrepy.splice(0,rpn);
                 othax.splice(0,rpn);
                 othay.splice(0,rpn);
-                c+=1;
-                console.log(c);
+                ca+=1;
+                console.log(ca);
                 k=0;
+                for(let ai=0;ai<apn;ai++){
+                    cx=[(aap[0]-x[ai])/100];
+                    cy=[(aap[1]-y[ai])/100];
+                    x[ai]=x[ai]+cx[0];
+                    y[ai]=y[ai]+cy[0];
+                }
                 return ;
             }
         }
     }
     ctx.beginPath();
-    ctx.fillStyle='green';
+    ctx.fillStyle='black';
     ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.closePath();
     for(let i=0;i<items;i++){
